@@ -138,14 +138,14 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_ADC1_Init();
   MX_TIM1_Init();
   MX_TIM8_Init();
   MX_TIM20_Init();
   MX_SPI2_Init();
+  MX_ADC2_Init();
   /* USER CODE BEGIN 2 */
   // ���� ADC DMA ����
-  HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_buffer_a, ADC_BUFFER_SIZE);
+  HAL_ADC_Start_DMA(&hadc2, (uint32_t*)adc_buffer_a, ADC_BUFFER_SIZE);
 // ������ʱ������ ADC
   HAL_TIM_Base_Start(&htim1);
 	
@@ -231,25 +231,25 @@ int main(void)
 		lcd_show_waveform( averaged_buffer );
 	}
 
-    if (average_ready) {
-		//ADC_Pause(&hadc1);
-		ADCflag = 0;
-        average_ready = 0;
-		sendflag = 1;
-        // 发送数据...
-        for (int i = 0; i < ADC_BUFFER_SIZE; i++) {
-            uint16_t adc_value = averaged_buffer[i];
-            uint8_t data_packet[3] = {
-                0xAA,
-                (uint8_t)(adc_value >> 8),
-                (uint8_t)(adc_value & 0xFF)
-            };
-            HAL_UART_Transmit(&hcom_uart[COM1], data_packet, 3, 100);
-        }
-		//ADC_Resume(&hadc1);
-		sendflag = 0;
-		
-    }
+//    if (average_ready) {
+//		//ADC_Pause(&hadc1);
+//		ADCflag = 0;
+//        average_ready = 0;
+//		sendflag = 1;
+//        // 发送数据...
+//        for (int i = 0; i < ADC_BUFFER_SIZE; i++) {
+//            uint16_t adc_value = averaged_buffer[i];
+//            uint8_t data_packet[3] = {
+//                0xAA,
+//                (uint8_t)(adc_value >> 8),
+//                (uint8_t)(adc_value & 0xFF)
+//            };
+//            HAL_UART_Transmit(&hcom_uart[COM1], data_packet, 3, 100);
+//        }
+//		//ADC_Resume(&hadc1);
+//		sendflag = 0;
+//		
+//    }
     //HAL_Delay(1);
     /* USER CODE END WHILE */
 
@@ -318,16 +318,16 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
 
     // 启动DMA到另一个缓冲区
     if (current_buffer == 0) {
-        HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_buffer_b, ADC_BUFFER_SIZE);
+        HAL_ADC_Start_DMA(&hadc2, (uint32_t*)adc_buffer_b, ADC_BUFFER_SIZE);
         current_buffer = 1;
     } else {
-        HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_buffer_a, ADC_BUFFER_SIZE);
+        HAL_ADC_Start_DMA(&hadc2, (uint32_t*)adc_buffer_a, ADC_BUFFER_SIZE);
         current_buffer = 0;
     }
 }
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
-    active_tx_buffer ^= 1; // �л�������
+    active_tx_buffer ^= 1;
 }
 
 
@@ -418,13 +418,21 @@ void lcd_show_waveform(volatile uint16_t* p) {
     const uint16_t DISPLAY_START_X = 5;    // 显示区域起始X坐标
     const uint16_t DISPLAY_START_Y = 5;    // 显示区域起始Y坐标
     const uint16_t DISPLAY_END_Y = 234;    // 显示区域结束Y坐标
-    const uint16_t DISPLAY_HEIGHT = WAVEFORMWIDTH;   // 显示区域高度 (234-5+1=230)
-    const uint16_t DISPLAY_WIDTH = WAVEFORMHEIGHT;    // 显示区域宽度 (234-5+1=230)
+    const uint16_t DISPLAY_HEIGHT = DISPLAY_END_Y - DISPLAY_START_Y; // 显示区域高度
+    const uint16_t DISPLAY_WIDTH = 230;    // 显示区域宽度 (根据实际情况调整)
     
-    // 3. 查找最大值位置
+    // 3. 固定电压范围 (1.4V ~ 1.9V)
+    const float VOLT_MIN = 1.4f;           // 最小电压 1.4V
+    const float VOLT_MAX = 1.9f;           // 最大电压 1.9V
+    
+    // 4. 计算对应的ADC值范围
+    const uint16_t ADC_MIN = (uint16_t)((VOLT_MIN / 3.3f) * 2048);
+    const uint16_t ADC_MAX = (uint16_t)((VOLT_MAX / 3.3f) * 2048);
+    const uint16_t ADC_RANGE = ADC_MAX - ADC_MIN;
+    
+    // 5. 查找最大值位置 (用于确定显示起点)
     uint16_t max = 0;
     uint16_t max_p = 100;
-    // 搜索整个缓冲区，避免错过前100个点的峰值
     for(int i = 0; i < ADC_BUFFER_SIZE; i++) {
         if(p[i] > max) {
             max = p[i];
@@ -432,62 +440,60 @@ void lcd_show_waveform(volatile uint16_t* p) {
         }
     }
     
-    // 4. 安全计算起点
+    // 6. 安全计算起点
     uint16_t start_point;
     if(max_p < 20) {
-        start_point = 0;  // 如果峰值太靠前，从0开始
+        start_point = 0;
     } else {
-        start_point = max_p - 20;  // 峰值前20个点作为起点
+        start_point = max_p - 20;
     }
     
-    // 5. 计算实际可绘制的点数
-    uint16_t draw_points = DISPLAY_WIDTH;
+    // 7. 计算实际可绘制的点数
+    uint16_t draw_points = DISPLAY_WIDTH / 2;
     if(start_point + draw_points >= ADC_BUFFER_SIZE) {
         draw_points = ADC_BUFFER_SIZE - start_point - 1;
     }
     
-    // 6. 绘制第一个点
+    // 8. 绘制第一个点
     // 清除第一列
-    atk_md0240_draw_line(DISPLAY_START_X, DISPLAY_START_Y, 
-                         DISPLAY_START_X, DISPLAY_END_Y, 
-                         ATK_MD0240_WHITE);
+    atk_md0240_draw_line(DISPLAY_START_X, DISPLAY_START_Y, DISPLAY_START_X, DISPLAY_END_Y, ATK_MD0240_WHITE);
+    atk_md0240_draw_line(DISPLAY_START_X+1, DISPLAY_START_Y, DISPLAY_START_X+1, DISPLAY_END_Y, ATK_MD0240_WHITE);
     
-    // 计算第一个点的Y坐标
-    uint32_t y_val = (uint32_t)p[start_point] * DISPLAY_HEIGHT / 2048;
-    y_val = DISPLAY_END_Y - y_val;  // 反转Y轴：0在底部，4095在顶部
+    // 约束ADC值在[ADC_MIN, ADC_MAX]范围内
+    uint16_t adc_value = p[start_point];
+    if(adc_value < ADC_MIN) adc_value = ADC_MIN;
+    if(adc_value > ADC_MAX) adc_value = ADC_MAX;
     
-    // 约束Y坐标在有效范围内
-    if(y_val < DISPLAY_START_Y) y_val = DISPLAY_START_Y;
-    if(y_val > DISPLAY_END_Y) y_val = DISPLAY_END_Y;
+    // 计算Y坐标 (注意：高电压对应屏幕顶部)
+    uint16_t y_val = ((uint32_t)(adc_value - ADC_MIN) * DISPLAY_HEIGHT) / ADC_RANGE;
+    y_val = DISPLAY_END_Y - y_val;  // 反转Y轴
     
     // 绘制第一个点
     atk_md0240_draw_point(DISPLAY_START_X, y_val, ATK_MD0240_BLACK);
     
-    // 7. 绘制后续点（保留逐列刷新效果）
+    // 9. 绘制后续点
     for(int i = 1; i < draw_points; i++) {
+        uint16_t col = DISPLAY_START_X + 2*i;
         // 清除当前列
-        atk_md0240_draw_line(DISPLAY_START_X + i, DISPLAY_START_Y, 
-                             DISPLAY_START_X + i, DISPLAY_END_Y, 
-                             ATK_MD0240_WHITE);
+        atk_md0240_draw_line(col, DISPLAY_START_Y, col, DISPLAY_END_Y, ATK_MD0240_WHITE);
+        atk_md0240_draw_line(col+1, DISPLAY_START_Y, col+1, DISPLAY_END_Y, ATK_MD0240_WHITE);
         
-        // 计算前一个点的Y坐标
-        uint32_t prev_val = (uint32_t)p[start_point + i - 1] * DISPLAY_HEIGHT / 2048;
-        uint16_t prev_y = DISPLAY_END_Y - prev_val;  // 反转Y轴
-        if(prev_y < DISPLAY_START_Y) prev_y = DISPLAY_START_Y;
-        if(prev_y > DISPLAY_END_Y) prev_y = DISPLAY_END_Y;
+        // 处理前一个点
+        uint16_t prev_adc = p[start_point + i - 1];
+        if(prev_adc < ADC_MIN) prev_adc = ADC_MIN;
+        if(prev_adc > ADC_MAX) prev_adc = ADC_MAX;
+        uint16_t prev_y = ((uint32_t)(prev_adc - ADC_MIN) * DISPLAY_HEIGHT) / ADC_RANGE;
+        prev_y = DISPLAY_END_Y - prev_y;
         
-        // 计算当前点的Y坐标
-        uint32_t curr_val = (uint32_t)p[start_point + i] * DISPLAY_HEIGHT / 2048;
-        uint16_t curr_y = DISPLAY_END_Y - curr_val;  // 反转Y轴
-        if(curr_y < DISPLAY_START_Y) curr_y = DISPLAY_START_Y;
-        if(curr_y > DISPLAY_END_Y) curr_y = DISPLAY_END_Y;
+        // 处理当前点
+        uint16_t curr_adc = p[start_point + i];
+        if(curr_adc < ADC_MIN) curr_adc = ADC_MIN;
+        if(curr_adc > ADC_MAX) curr_adc = ADC_MAX;
+        uint16_t curr_y = ((uint32_t)(curr_adc - ADC_MIN) * DISPLAY_HEIGHT) / ADC_RANGE;
+        curr_y = DISPLAY_END_Y - curr_y;
         
-        // 绘制连接线（当前点和前一个点）
-        atk_md0240_draw_line(
-            DISPLAY_START_X + i - 1, prev_y, 
-            DISPLAY_START_X + i, curr_y, 
-            ATK_MD0240_BLACK
-        );
+        // 绘制连接线
+        atk_md0240_draw_line(col - 2, prev_y, col, curr_y, ATK_MD0240_BLACK);
     }
 }
 
@@ -503,10 +509,8 @@ void draw_axes(void){
 	atk_md0240_draw_line( 155 ,235 ,155, 240 ,ATK_MD0240_BLACK );
 	atk_md0240_draw_line( 205 ,235 ,205, 240 ,ATK_MD0240_BLACK ); 
 	
-	atk_md0240_show_string( 20 ,240, "y:1V/dev",ATK_MD0240_FONT_12 , ATK_MD0240_BROWN  );
+	//atk_md0240_show_string( 20 ,240, "y:1V/dev",ATK_MD0240_FONT_12 , ATK_MD0240_BROWN  );
 	atk_md0240_show_string( 120 ,240, "x:50us/dev",ATK_MD0240_FONT_12 , ATK_MD0240_BROWN  );
-	
-	
 }
 	
 

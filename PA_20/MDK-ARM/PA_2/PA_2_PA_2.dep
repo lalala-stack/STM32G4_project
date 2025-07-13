@@ -1,7 +1,7 @@
 Dependencies for Project 'PA_2', Target 'PA_2': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (startup_stm32g474xx.s)(0x68672592)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"--pd "__UVISION_VERSION SETA 542" --pd "STM32G474xx SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32g474xx.lst --xref -o pa_2\startup_stm32g474xx.o --depend pa_2\startup_stm32g474xx.d)
-F (../Core/Src/main.c)(0x68672852)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/BSP/STM32G4xx_Nucleo -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../LCD/ATK_MD0240 -I ../LCD/LCD-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"-D__UVISION_VERSION="542" -DSTM32G474xx -D_RTE_ -DUSE_NUCLEO_64 -DUSE_HAL_DRIVER -DSTM32G474xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_M-o pa_2\main.o --omf_browse pa_2\main.crf --depend pa_2\main.d)
+F (startup_stm32g474xx.s)(0x68739961)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"--pd "__UVISION_VERSION SETA 542" --pd "STM32G474xx SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32g474xx.lst --xref -o pa_2\startup_stm32g474xx.o --depend pa_2\startup_stm32g474xx.d)
+F (../Core/Src/main.c)(0x687399A3)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/BSP/STM32G4xx_Nucleo -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../LCD/ATK_MD0240 -I ../LCD/LCD-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"-D__UVISION_VERSION="542" -DSTM32G474xx -D_RTE_ -DUSE_NUCLEO_64 -DUSE_HAL_DRIVER -DSTM32G474xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_M-o pa_2\main.o --omf_browse pa_2\main.crf --depend pa_2\main.d)
 I (../Core/Inc/main.h)(0x6860E8FD)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x68201C58)
 I (../Core/Inc/stm32g4xx_hal_conf.h)(0x685DF8C3)
@@ -43,7 +43,7 @@ I (../Drivers/BSP/STM32G4xx_Nucleo/stm32g4xx_nucleo.h)(0x68201C38)
 I (../Drivers/BSP/STM32G4xx_Nucleo/stm32g4xx_nucleo_errno.h)(0x68201C38)
 I (../Core/Inc/stm32g4xx_nucleo_conf.h)(0x682CB324)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
-I (../Core/Inc/adc.h)(0x682CB324)
+I (../Core/Inc/adc.h)(0x6873995E)
 I (../Core/Inc/dma.h)(0x682CB324)
 I (../Core/Inc/spi.h)(0x685DF8C2)
 I (../Core/Inc/tim.h)(0x683E5356)
@@ -95,8 +95,8 @@ I (../Drivers/BSP/STM32G4xx_Nucleo/stm32g4xx_nucleo.h)(0x68201C38)
 I (../Drivers/BSP/STM32G4xx_Nucleo/stm32g4xx_nucleo_errno.h)(0x68201C38)
 I (../Core/Inc/stm32g4xx_nucleo_conf.h)(0x682CB324)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
-F (../Core/Src/adc.c)(0x68672590)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/BSP/STM32G4xx_Nucleo -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../LCD/ATK_MD0240 -I ../LCD/LCD-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"-D__UVISION_VERSION="542" -DSTM32G474xx -D_RTE_ -DUSE_NUCLEO_64 -DUSE_HAL_DRIVER -DSTM32G474xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_M-o pa_2\adc.o --omf_browse pa_2\adc.crf --depend pa_2\adc.d)
-I (../Core/Inc/adc.h)(0x682CB324)
+F (../Core/Src/adc.c)(0x6873995E)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/BSP/STM32G4xx_Nucleo -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../LCD/ATK_MD0240 -I ../LCD/LCD-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"-D__UVISION_VERSION="542" -DSTM32G474xx -D_RTE_ -DUSE_NUCLEO_64 -DUSE_HAL_DRIVER -DSTM32G474xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_M-o pa_2\adc.o --omf_browse pa_2\adc.crf --depend pa_2\adc.d)
+I (../Core/Inc/adc.h)(0x6873995E)
 I (../Core/Inc/main.h)(0x6860E8FD)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x68201C58)
 I (../Core/Inc/stm32g4xx_hal_conf.h)(0x685DF8C3)
@@ -267,7 +267,7 @@ I (../Drivers/BSP/STM32G4xx_Nucleo/stm32g4xx_nucleo.h)(0x68201C38)
 I (../Drivers/BSP/STM32G4xx_Nucleo/stm32g4xx_nucleo_errno.h)(0x68201C38)
 I (../Core/Inc/stm32g4xx_nucleo_conf.h)(0x682CB324)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5E8E2EB2)
-F (../Core/Src/stm32g4xx_it.c)(0x683E5356)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/BSP/STM32G4xx_Nucleo -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../LCD/ATK_MD0240 -I ../LCD/LCD-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"-D__UVISION_VERSION="542" -DSTM32G474xx -D_RTE_ -DUSE_NUCLEO_64 -DUSE_HAL_DRIVER -DSTM32G474xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_M-o pa_2\stm32g4xx_it.o --omf_browse pa_2\stm32g4xx_it.crf --depend pa_2\stm32g4xx_it.d)
+F (../Core/Src/stm32g4xx_it.c)(0x6873995F)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/BSP/STM32G4xx_Nucleo -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../LCD/ATK_MD0240 -I ../LCD/LCD-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"-D__UVISION_VERSION="542" -DSTM32G474xx -D_RTE_ -DUSE_NUCLEO_64 -DUSE_HAL_DRIVER -DSTM32G474xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_M-o pa_2\stm32g4xx_it.o --omf_browse pa_2\stm32g4xx_it.crf --depend pa_2\stm32g4xx_it.d)
 I (../Core/Inc/main.h)(0x6860E8FD)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x68201C58)
 I (../Core/Inc/stm32g4xx_hal_conf.h)(0x685DF8C3)
@@ -1282,7 +1282,7 @@ I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim.h)(0x68201C58)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h)(0x68201C58)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h)(0x68201C58)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h)(0x68201C58)
-F (..\LCD\ATK_MD0240\atk_md0240.c)(0x6860BE2A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/BSP/STM32G4xx_Nucleo -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../LCD/ATK_MD0240 -I ../LCD/LCD-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"-D__UVISION_VERSION="542" -DSTM32G474xx -D_RTE_ -DUSE_NUCLEO_64 -DUSE_HAL_DRIVER -DSTM32G474xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_M-o pa_2\atk_md0240.o --omf_browse pa_2\atk_md0240.crf --depend pa_2\atk_md0240.d)
+F (..\LCD\ATK_MD0240\atk_md0240.c)(0x686C849A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc -I ../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -I ../Drivers/BSP/STM32G4xx_Nucleo -I ../Drivers/CMSIS/Device/ST/STM32G4xx/Include -I ../Drivers/CMSIS/Include -I ../LCD/ATK_MD0240 -I ../LCD/LCD-I.\RTE\_PA_2-I"C:\Users\Liu PF\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include"-D__UVISION_VERSION="542" -DSTM32G474xx -D_RTE_ -DUSE_NUCLEO_64 -DUSE_HAL_DRIVER -DSTM32G474xx -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_M-o pa_2\atk_md0240.o --omf_browse pa_2\atk_md0240.crf --depend pa_2\atk_md0240.d)
 I (..\LCD\ATK_MD0240\atk_md0240.h)(0x68641FA3)
 I (../Core/Inc/main.h)(0x6860E8FD)
 I (../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h)(0x68201C58)
